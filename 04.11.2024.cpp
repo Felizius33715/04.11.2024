@@ -11,7 +11,8 @@ private:
 public:
     Matrix(int rows, int cols) : rows(rows), cols(cols) {
         if (rows <= 0 || cols <= 0) {
-            std::cout << "ERROR, ROWS OR/AND COLS IS CAN'T BE NEGATIVE!" << std::endl;
+            //std::cout << "ERROR, ROWS OR/AND COLS IS CAN'T BE NEGATIVE!" << std::endl;
+            throw std::invalid_argument("ERROR, ROWS OR/AND COLS IS CAN'T BE NEGATIVE!");
         }
         else {
             data = new T * [rows];
@@ -30,14 +31,16 @@ public:
 
     T* operator[](int i) {
         if (i < 0 || i >= rows) {
-            std::cout << "Index is out of range." << std::endl;
+            //std::cout << "Index is out of range." << std::endl;
+            throw std::out_of_range("Index is out of range.");
         }
         else { return data[i]; }
     }
 
     const T* operator[](int i) const {
         if (i < 0 || i >= rows) {
-            std::cout << "Index is out of range." << std::endl;
+            //std::cout << "Index is out of range." << std::endl;
+            throw std::out_of_range("Index is out of range.");
         }
         else{ return data[i]; }
     }
@@ -53,10 +56,16 @@ Matrix<T> table(int rows, int cols) {
 }
 
 int main() {
-
+    try {
         auto test = table<int>(2, 3);
         test[0][0] = 4;
         std::cout << test[0][0] << std::endl;
         std::cout << "Size of array: " << test.Size() << std::endl;
+    }
+    catch (const std::exception& e) {
+        std::cerr << "ERROR: " << e.what() << std::endl;
+        return 1;
+    }
+
     return 0;
 }
